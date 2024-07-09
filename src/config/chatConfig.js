@@ -9,14 +9,9 @@ const customInstructions = readFileSync(join(__dirname, 'custom.txt'), {
   encoding: 'utf8',
 });
 
-const modelParams = {
-  model: 'gpt-4-0125-preview',
-  temperature: 0.65,
-  max_tokens: 1000,
-  top_p: 0.9,
-  frequency_penalty: 0.5,
-  presence_penalty: 0.5,
-};
+const modelParams = JSON.parse(
+  readFileSync(join(__dirname, 'modelParams.json'), 'utf-8'),
+);
 
 const escapeCodes = {
   // ANSI escape codes

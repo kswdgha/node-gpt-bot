@@ -1,10 +1,10 @@
 import dotenv from 'dotenv';
-dotenv.config();
-
 import OpenAI from 'openai';
 import readline from 'readline';
 
 import chatConfig from './config/chatConfig.js';
+
+dotenv.config();
 
 class ChatGPT {
   constructor(configuration = chatConfig) {
@@ -25,7 +25,7 @@ class ChatGPT {
   }
 
   start() {
-    // Start message
+    // Welcome message
     this._logAiResponse('How can I help you?');
     // Set prompt message
     this.rl.setPrompt('\n🙂 You: ');
