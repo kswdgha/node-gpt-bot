@@ -9,19 +9,23 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "lint": "npx eslint ."
+    "lint": "npx eslint .",
+    "bot:dev": "nodemon ./src/bot/index.js",
+    "bot:start": "node ./src/bot/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
+    "node-telegram-bot-api": "^0.66.0",
     "openai": "^4.52.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.6.0",
     "eslint": "^9.6.0",
-    "globals": "^15.8.0"
+    "globals": "^15.8.0",
+    "nodemon": "^3.1.4"
   },
   "overrides": {
     "whatwg-url": "13.0.0"
