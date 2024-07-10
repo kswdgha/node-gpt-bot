@@ -11,7 +11,14 @@ const escapeCodes = {
 
 class CLI {
   constructor() {
-    this._gpt = new ChatGPT();
+    const modelArg = process.argv[2];
+    if (modelArg === '4') {
+      console.log('Using model gpt-4o');
+      this._gpt = new ChatGPT({ model: 'gpt-4o' });
+    } else {
+      console.log('Using model gpt-3.5-turbo');
+      this._gpt = new ChatGPT();
+    }
     // Init readline interface
     this._rl = readline.createInterface({
       input: process.stdin,

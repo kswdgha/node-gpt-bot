@@ -10,12 +10,12 @@ dotenv.config();
 
 class ChatGPT {
   constructor(
+    modelParams,
     instructions = defaultInstructions,
-    modelParams = defaultModelParams,
     messageHistory = [],
   ) {
     this._openai = new OpenAI();
-    this._params = modelParams;
+    this._params = { ...defaultModelParams, ...modelParams };
     this._initialHistory = [
       {
         role: 'system',
