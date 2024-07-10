@@ -1,3 +1,4 @@
 node_modules/
 .env
 start_bot.sh
+stop_bot.sh
