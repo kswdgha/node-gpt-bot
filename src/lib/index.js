@@ -1,12 +1,9 @@
-import dotenv from 'dotenv';
 import OpenAI from 'openai';
 
 import {
   defaultInstructions,
   defaultModelParams,
 } from './config/defaultConfig.js';
-
-dotenv.config();
 
 class ChatGPT {
   constructor(

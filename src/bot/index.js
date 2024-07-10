@@ -1,9 +1,6 @@
-import dotenv from 'dotenv';
 import TelegramBot from 'node-telegram-bot-api';
 
 import ChatGPT from '../lib/index.js';
-
-dotenv.config();
 
 class BotService {
   constructor() {
