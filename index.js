@@ -1,4 +1,8 @@
-import ChatGPT from './src/ChatGPTService.js';
+// Example usage
+import ChatGPT from './src/lib/index.js';
 
-const chat = new ChatGPT();
-chat.start();
+const gpt = new ChatGPT();
+const response = await gpt.askQuestion(
+  'Top 10 programming languages for backend',
+);
+console.log(response);
