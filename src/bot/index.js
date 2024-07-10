@@ -6,7 +6,7 @@ class BotService {
   constructor() {
     this._bot = new TelegramBot(process.env.TG_BOT_TOKEN, { polling: true });
     this._openChats = {};
-    this._inactivityTimeout = 300000; // 5 minutes
+    this._inactivityTimeout = process.env.BOT_TIMEOUT_MS || 600000; // 10 minutes default
   }
 
   async start() {
