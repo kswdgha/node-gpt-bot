@@ -30,7 +30,6 @@ class ChatGPT {
     }
     // Start processing
     this._isProcessing = true;
-    this._aiResponse;
     const newQuestion = { role: 'user', content: question };
 
     try {
