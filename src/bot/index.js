@@ -73,6 +73,7 @@ class BotService {
       }
 
       // Main flow
+      console.log(text); // DEBUG
       this._openChats[chatId].isProcessing = true;
 
       try {
