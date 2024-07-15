@@ -93,6 +93,15 @@ class BotService {
       const chatId = message.chat.id;
       const data = callbackQuery.data; // 'GPT-3' or 'GPT-4'
 
+      // /start command is required
+      if (!Object.hasOwn(this._openChats, chatId)) {
+        await this._bot.sendMessage(
+          chatId,
+          'You should start a new chat first (send /start command)',
+        );
+        return;
+      }
+
       // Check if model already chosen
       if (this._openChats[chatId].gpt) {
         await this._bot.sendMessage(
