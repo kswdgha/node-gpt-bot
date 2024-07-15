@@ -79,6 +79,21 @@ class BotService {
       try {
         await this._bot.sendMessage(chatId, '...');
         const response = await this._openChats[chatId].gpt.askQuestion(text);
+        // Check if response is too long
+        if (response.length > process.env.TG_MAX_CHUNK_SIZE) {
+          // Split the message into manageable chunks
+          const messageChunks = this._splitIntoChunks(response);
+          // Send each chunk as a separate message
+          for (const chunk of messageChunks) {
+            console.log(chunk.length);
+            await this._bot.sendMessage(chatId, chunk, {
+              parse_mode: 'Markdown',
+            });
+          }
+
+          return;
+        }
+        // Or send one message
         await this._bot.sendMessage(chatId, response, {
           parse_mode: 'Markdown',
         });
@@ -140,6 +155,30 @@ class BotService {
     this._inactivityTimer = setTimeout(() => {
       this.stop();
     }, this._inactivityTimeout);
+  }
+
+  _splitIntoChunks(message) {
+    const chunks = [];
+
+    while (message.length > 0) {
+      // Check if the message is within the max limit
+      if (message.length <= process.env.TG_MAX_CHUNK_SIZE) {
+        chunks.push(message);
+        break;
+      }
+
+      // Find the last newline character within the limit
+      let end = message
+        .substring(0, process.env.TG_MAX_CHUNK_SIZE)
+        .lastIndexOf('\n');
+      // If no newline is found,  cut at the max size
+      end = end > 0 ? end : process.env.TG_MAX_CHUNK_SIZE;
+
+      chunks.push(message.substring(0, end));
+      message = message.substring(end).trim();
+    }
+
+    return chunks;
   }
 }
 
