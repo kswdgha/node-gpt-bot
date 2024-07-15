@@ -28,9 +28,24 @@ class BotService {
 
       // Init new chat
       if (text === '/start') {
-        // Create new chat, save it by user chatId
-        this._openChats[chatId] = { gpt: new ChatGPT(), isProcessing: false };
-        await this._bot.sendMessage(chatId, 'How can I help you?');
+        // Register new chatId
+        this._openChats[chatId] = { gpt: null };
+        // Prompt to choose a model
+        const options = {
+          reply_markup: {
+            inline_keyboard: [
+              [{ text: 'Use GPT-3', callback_data: 'GPT-3' }],
+              [{ text: 'Use GPT-4', callback_data: 'GPT-4' }],
+            ],
+          },
+        };
+
+        await this._bot.sendMessage(
+          chatId,
+          'Choose a GPT model to continue:',
+          options,
+        );
+
         return;
       }
 
@@ -39,6 +54,15 @@ class BotService {
         await this._bot.sendMessage(
           chatId,
           'You should start a new chat first (send /start command)',
+        );
+        return;
+      }
+
+      // model is required
+      if (!this._openChats[chatId].gpt) {
+        await this._bot.sendMessage(
+          chatId,
+          'Please choose a model first by clicking one of the buttons.',
         );
         return;
       }
@@ -61,6 +85,31 @@ class BotService {
       } finally {
         this._openChats[chatId].isProcessing = false;
       }
+    });
+
+    // Handle callback queries (user button click)
+    this._bot.on('callback_query', async (callbackQuery) => {
+      const message = callbackQuery.message;
+      const chatId = message.chat.id;
+      const data = callbackQuery.data; // 'GPT-3' or 'GPT-4'
+
+      // Check if model already chosen
+      if (this._openChats[chatId].gpt) {
+        await this._bot.sendMessage(
+          chatId,
+          `You already selected a model. If you want to change it, send /start`,
+        );
+        return;
+      }
+
+      // Create new gpt for chatId, set the model based on user selection
+      const gpt =
+        data === 'GPT-4' ? new ChatGPT({ model: 'gpt-4o' }) : new ChatGPT();
+      this._openChats[chatId] = { gpt, isProcessing: false };
+      await this._bot.sendMessage(
+        chatId,
+        `Model ${data} selected.\nHow can I help you?`,
+      );
     });
   }
 
