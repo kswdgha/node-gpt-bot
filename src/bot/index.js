@@ -95,6 +95,9 @@ class BotService {
       const chatId = message.chat.id;
       const data = callbackQuery.data; // 'GPT-3' or 'GPT-4'
 
+      // Handle callback query (notify tg servers)
+      await this._bot.answerCallbackQuery(callbackQuery.id);
+
       // /start command is required
       if (!Object.hasOwn(this._openChats, chatId)) {
         await this._bot.sendMessage(
