@@ -78,7 +78,9 @@ class BotService {
       try {
         await this._bot.sendMessage(chatId, '...');
         const response = await this._openChats[chatId].gpt.askQuestion(text);
-        await this._bot.sendMessage(chatId, response);
+        await this._bot.sendMessage(chatId, response, {
+          parse_mode: 'Markdown',
+        });
       } catch (error) {
         console.error(error);
         await this._bot.sendMessage(chatId, "Can't process this request");
