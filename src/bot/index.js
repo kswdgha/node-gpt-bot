@@ -73,7 +73,7 @@ class BotService {
       }
 
       // Main flow
-      console.log(text); // DEBUG
+      console.log(chatId, text); // DEBUG
       this._openChats[chatId].isProcessing = true;
 
       try {
@@ -85,7 +85,6 @@ class BotService {
           const messageChunks = this._splitIntoChunks(response);
           // Send each chunk as a separate message
           for (const chunk of messageChunks) {
-            console.log(chunk.length);
             await this._bot.sendMessage(chatId, chunk, {
               parse_mode: 'Markdown',
             });
