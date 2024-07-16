@@ -183,6 +183,7 @@ class BotService {
 }
 
 const botService = new BotService();
+
 botService.start();
 
 // export default BotService;

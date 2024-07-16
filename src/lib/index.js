@@ -40,7 +40,8 @@ class ChatGPT {
       // Append the new question to the messages array
       this._history.push(newQuestion);
       // Append the AI's response to the messages array
-      this._aiResponse = completion.choices[0].message.content;
+      const responseString = completion.choices[0].message.content;
+      this._aiResponse = this._formatResponse(responseString);
       this._history.push({ role: 'assistant', content: this._aiResponse });
     } catch (error) {
       this._aiResponse = "Can't process this request, try again...";
@@ -55,6 +56,13 @@ class ChatGPT {
 
   resetHistory() {
     this._history = [...this._initialHistory];
+  }
+
+  _formatResponse(inputString) {
+    // Handle weird response formatting
+    // Replace all non alphanumerical sequences with only one character
+    const formattedString = inputString.replace(/([^a-zA-Z0-9])\1*/g, '$1');
+    return formattedString;
   }
 }
 
