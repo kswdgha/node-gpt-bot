@@ -16,7 +16,7 @@ class CLI {
       console.log('Using model gpt-4o');
       this._gpt = new ChatGPT({ model: 'gpt-4o' });
     } else {
-      console.log('Using model gpt-3.5-turbo');
+      console.log('Using model gpt-4-mini');
       this._gpt = new ChatGPT();
     }
     // Init readline interface

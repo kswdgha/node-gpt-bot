@@ -34,8 +34,18 @@ class BotService {
         const options = {
           reply_markup: {
             inline_keyboard: [
-              [{ text: 'Use GPT-3', callback_data: 'GPT-3' }],
-              [{ text: 'Use GPT-4', callback_data: 'GPT-4' }],
+              [
+                {
+                  text: 'Use GPT-4-mini (Simple tasks)',
+                  callback_data: 'GPT-4-mini',
+                },
+              ],
+              [
+                {
+                  text: 'Use GPT-4 (Advanced model)',
+                  callback_data: 'GPT-4',
+                },
+              ],
             ],
           },
         };
@@ -108,7 +118,7 @@ class BotService {
     this._bot.on('callback_query', async (callbackQuery) => {
       const message = callbackQuery.message;
       const chatId = message.chat.id;
-      const data = callbackQuery.data; // 'GPT-3' or 'GPT-4'
+      const data = callbackQuery.data; // 'GPT-4-mini' or 'GPT-4'
 
       // Handle callback query (notify tg servers)
       await this._bot.answerCallbackQuery(callbackQuery.id);
