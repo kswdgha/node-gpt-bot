@@ -60,8 +60,8 @@ class ChatGPT {
 
   _formatResponse(inputString) {
     // Handle weird response formatting
-    // Replace all non alphanumerical sequences with only one character
-    const formattedString = inputString.replace(/([^a-zA-Z0-9])\1*/g, '$1');
+    // Replace sequences of whitespace characters with single character
+    const formattedString = inputString.replace(/(\s)\1+/g, '$1');
     return formattedString;
   }
 }
