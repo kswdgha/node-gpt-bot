@@ -3,25 +3,31 @@ import TelegramBot from 'node-telegram-bot-api';
 import ChatGPT from '../lib/index.js';
 
 class BotService {
-  constructor() {
-    this._bot = new TelegramBot(process.env.TG_BOT_TOKEN, { polling: true });
+  constructor(webHookUrl) {
+    // this._bot = new TelegramBot(process.env.TG_BOT_TOKEN, { polling: true });
+    this._bot = new TelegramBot(process.env.TG_BOT_TOKEN);
+    this.webHookUrl = webHookUrl;
+    // Init chats
     this._openChats = {};
-    this._inactivityTimeout = process.env.BOT_TIMEOUT_MS || 600000; // 10 minutes default
+    // this._inactivityTimeout = process.env.BOT_TIMEOUT_MS || 600000; // 10 minutes default
   }
 
   async start() {
+    // Set webhook
+    this._bot.setWebHook(this.webHookUrl);
+
     // Init commands
     await this._bot.setMyCommands([
       { command: 'start', description: 'Start a new chat' },
     ]);
 
     // Setup inactivity tracking
-    this._resetInactivityTimer(); // Bot will stop polling after timeout if inactive
+    // this._resetInactivityTimer(); // Bot will stop polling after timeout if inactive
 
     // Incoming messages handler (only text)
     this._bot.on('text', async (msg) => {
       // Update activity
-      this._resetInactivityTimer();
+      // this._resetInactivityTimer();
 
       const text = msg.text;
       const chatId = msg.chat.id;
@@ -152,19 +158,23 @@ class BotService {
     });
   }
 
-  stop() {
-    this._bot.stopPolling();
-    console.log('Bot stopped due to inactivity.');
+  processUpdate(data) {
+    this._bot.processUpdate(data);
   }
 
-  _resetInactivityTimer() {
-    if (this._inactivityTimer) {
-      clearTimeout(this._inactivityTimer);
-    }
-    this._inactivityTimer = setTimeout(() => {
-      this.stop();
-    }, this._inactivityTimeout);
-  }
+  // stop() {
+  //   this._bot.stopPolling();
+  //   console.log('Bot stopped due to inactivity.');
+  // }
+
+  // _resetInactivityTimer() {
+  //   if (this._inactivityTimer) {
+  //     clearTimeout(this._inactivityTimer);
+  //   }
+  //   this._inactivityTimer = setTimeout(() => {
+  //     this.stop();
+  //   }, this._inactivityTimeout);
+  // }
 
   _splitIntoChunks(message) {
     const chunks = [];
@@ -191,8 +201,7 @@ class BotService {
   }
 }
 
-const botService = new BotService();
+// const botService = new BotService();
+// botService.start();
 
-botService.start();
-
-// export default BotService;
+export default BotService;
