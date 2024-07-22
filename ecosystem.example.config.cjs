@@ -15,7 +15,7 @@ module.exports = {
         SERVER_URL: 'https://your_server_domain:your_server_port',
       },
       watch: false,
-      autorestart: false,
+      autorestart: true,
       instances: 1,
       exec_mode: 'fork',
     },
