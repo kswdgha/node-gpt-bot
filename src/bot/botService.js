@@ -18,7 +18,7 @@ class BotService {
 
     // Init commands
     await this._bot.setMyCommands([
-      { command: 'start', description: 'Start a new chat' },
+      { command: 'new', description: 'Start a new chat' },
     ]);
 
     // Setup inactivity tracking
@@ -33,7 +33,7 @@ class BotService {
       const chatId = msg.chat.id;
 
       // Init new chat
-      if (text === '/start') {
+      if (text === '/new' || text === '/start') {
         // Register new chatId
         this._openChats[chatId] = { gpt: null };
         // Prompt to choose a model
@@ -65,11 +65,11 @@ class BotService {
         return;
       }
 
-      // /start command is required
+      // /new command is required
       if (!Object.hasOwn(this._openChats, chatId)) {
         await this._bot.sendMessage(
           chatId,
-          'You should start a new chat first (send /start command)',
+          'You should start a new chat first (send /new command)',
         );
         return;
       }
@@ -86,6 +86,7 @@ class BotService {
       // Prevent from flooding with requests to gpt
       if (this._openChats[chatId].isProcessing) {
         await this._bot.sendMessage(chatId, 'Please wait...');
+        return;
       }
 
       // Main flow
@@ -129,11 +130,11 @@ class BotService {
       // Handle callback query (notify tg servers)
       await this._bot.answerCallbackQuery(callbackQuery.id);
 
-      // /start command is required
+      // /new command is required
       if (!Object.hasOwn(this._openChats, chatId)) {
         await this._bot.sendMessage(
           chatId,
-          'You should start a new chat first (send /start command)',
+          'You should start a new chat first (send /new command)',
         );
         return;
       }
@@ -142,7 +143,7 @@ class BotService {
       if (this._openChats[chatId].gpt) {
         await this._bot.sendMessage(
           chatId,
-          `You already selected a model. If you want to change it, send /start`,
+          `You already selected a model. If you want to change it, send /new`,
         );
         return;
       }
