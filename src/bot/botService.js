@@ -103,7 +103,7 @@ class BotService {
           // Send each chunk as a separate message
           for (const chunk of messageChunks) {
             await this._bot.sendMessage(chatId, chunk, {
-              parse_mode: 'Markdown',
+              parse_mode: 'MarkdownV2',
             });
           }
 
@@ -111,7 +111,7 @@ class BotService {
         }
         // Or send one message
         await this._bot.sendMessage(chatId, response, {
-          parse_mode: 'Markdown',
+          parse_mode: 'MarkdownV2',
         });
       } catch (error) {
         console.error(error);
