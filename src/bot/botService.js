@@ -102,17 +102,13 @@ class BotService {
           const messageChunks = this._splitIntoChunks(response);
           // Send each chunk as a separate message
           for (const chunk of messageChunks) {
-            await this._bot.sendMessage(chatId, chunk, {
-              parse_mode: 'MarkdownV2',
-            });
+            await this._bot.sendMessage(chatId, chunk);
           }
 
           return;
         }
         // Or send one message
-        await this._bot.sendMessage(chatId, response, {
-          parse_mode: 'MarkdownV2',
-        });
+        await this._bot.sendMessage(chatId, response);
       } catch (error) {
         console.error(error);
         await this._bot.sendMessage(chatId, "Can't process this request");
